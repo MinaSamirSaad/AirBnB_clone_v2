@@ -58,8 +58,13 @@ class DBStorage:
                 for obj in query:
                     key = "{}.{}".format(obj.__class__.__name__, obj.id)
                     dbResult[key] = obj
-        elif cls in validClass:
+        elif type(cls) is str:
             query = self.__session.query(validClass[cls]).all()
+            for obj in query:
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
+                dbResult[key] = obj
+        else:
+            query = self.__session.query(cls).all()
             for obj in query:
                 key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 dbResult[key] = obj
@@ -94,4 +99,4 @@ class DBStorage:
 
     def close(self):
         """call remove() method on the private session attribute"""
-        self.__session.remove()
+        self.__session.close()
