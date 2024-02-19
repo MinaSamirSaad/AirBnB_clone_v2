@@ -34,6 +34,7 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place", passive_deletes=True)
         amenities = relationship("Amenity", secondary="place_amenity",
                                  viewonly=False, overlaps="place_amenities")
+
     else:
         city_id = ""
         user_id = ""
@@ -76,3 +77,6 @@ class Place(BaseModel, Base):
             from models.amenity import Amenity
             if obj and type(obj) == Amenity:
                 self.amenity_ids.append(obj.id)
+        def __init__(self, *args, **kwargs):
+            """initializes Place"""
+            super().__init__(*args, **kwargs)
